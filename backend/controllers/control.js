@@ -1,4 +1,8 @@
 import {Signup} from "../models/signup.js"
+import jwt from "jsonwebtoken"
+import bcrypt from "bcryptjs"
+import dotenv from "dotenv"
+dotenv.config()
 
 const reqBody = (req,res)=>{
     // console.log("hello, got a get request")
@@ -30,12 +34,15 @@ const login = async(req,res)=>{
     console.log(name)
     const user = await Signup.findOne({name});
     if(user){
-        console.log("user already exist")
-        res.json({message : "already exist"})
+        console.log("user exist")
+        const hashedPassword = bcrypt.hash(password)
+        console.log(hashedPassword)
+        res.json({message : "exist"})
     }
     else{
         console.log("user doesnt exist")
-        res.json({error : "user doesnt exist"})
+        const error = new Error("user already exist")
+        next(error)
     }
 }
 
