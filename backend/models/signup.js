@@ -2,7 +2,6 @@ import express from "express"
 import mongoose from "mongoose"
 
 const SignupSchema = new mongoose.Schema({
-    _id : Number,
     name : {
         type : String,
         unique : true,
@@ -11,6 +10,10 @@ const SignupSchema = new mongoose.Schema({
     email : {
         type : String,
         unique : true, 
+        required : true
+    },
+    password : {
+        type : String,
         required : true
     }
 },{

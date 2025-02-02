@@ -27,13 +27,23 @@ const signup = async(req,res)=>{
 
 const login = async(req,res)=>{
     const {name, password} = req.body
-    const user = await Signup.find({name});
+    console.log(name)
+    const user = await Signup.findOne({name});
     if(user){
         console.log("user already exist")
+        res.json({message : "already exist"})
     }
     else{
-        console.log("new user")
+        console.log("user doesnt exist")
+        res.json({error : "user doesnt exist"})
     }
 }
 
-export {reqBody, signup, login}
+const logout = (req,res)=>{
+    console.log("logged out")
+    res.json({message : "logged out"})
+}
+
+
+
+export {reqBody, signup, login, logout}
