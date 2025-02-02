@@ -16,7 +16,6 @@ app.use("/api/user/signup",check)
 //routes
 app.use("/api/users", users)
 
-
 app.use(notFound)
 app.use(errorHandler)
 

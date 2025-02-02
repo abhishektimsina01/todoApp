@@ -8,7 +8,7 @@ const reqBody = (req,res)=>{
     next(error)
 }
 
-const data = async(req,res)=>{
+const signup = async(req,res)=>{
     try{
         const {_id, name, email} = req.body;
         console.log(_id, name , email)
@@ -25,4 +25,15 @@ const data = async(req,res)=>{
     }
 }
 
-export {reqBody, data}
+const login = async(req,res)=>{
+    const {name, password} = req.body
+    const user = await Signup.find({name});
+    if(user){
+        console.log("user already exist")
+    }
+    else{
+        console.log("new user")
+    }
+}
+
+export {reqBody, signup, login}
