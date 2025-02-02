@@ -1,5 +1,5 @@
 import express from "express";
-import { Signup } from "../models/signup";
+import { Signup } from "../models/signup.js";
 
 const check = async(req,res,next)=>{
     try{

@@ -2,6 +2,7 @@ import express from "express"
 import dotenv from "dotenv"
 import {users} from "./router/routes.js"
 import { check } from "./middleware/middleware.js"
+import {notFound , errorHandler} from "./middleware/errorMiddleware.js"
 import { connectDatabase} from "./config.js"
 dotenv.config()
 
@@ -14,6 +15,10 @@ app.use("/api/user/signup",check)
 
 //routes
 app.use("/api/users", users)
+
+
+app.use(notFound)
+app.use(errorHandler)
 
 app.listen(process.env.port, ()=>{
     console.log("the server has been successfully connected")

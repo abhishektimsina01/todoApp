@@ -1,9 +1,11 @@
-import express from "express";
 import {Signup} from "../models/signup.js"
 
 const reqBody = (req,res)=>{
-    console.log("hello, got a get request")
-    res.send("requested")
+    // console.log("hello, got a get request")
+    const error = new Error("Something went wrong")
+    res.status(404)
+    error.stack = null
+    next(error)
 }
 
 const data = async(req,res)=>{
