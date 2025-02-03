@@ -14,14 +14,15 @@ const reqBody = (req,res)=>{
 
 const signup = async(req,res)=>{
     try{
-        const {_id, name, email} = req.body;
-        console.log(_id, name , email)
+        const { name, email, password} = req.body;
+        const hashedPassword = await bcrypt.hash(password, 10)
+        console.log(name , hashedPassword, email)
         const user = await Signup.create({
-            _id,
             name,
-            email
+            email,
+            password : hashedPassword
         })
-        console.log("Registered", user)
+        console.log(user.name,"registered")
         res.status(202).json({"message" : "registered"})
     }
     catch(err){
@@ -30,18 +31,17 @@ const signup = async(req,res)=>{
 }
 
 const login = async(req,res)=>{
-    const {name, password} = req.body
+    const {name, email, password} = req.body
     console.log(name)
     const user = await Signup.findOne({name});
-    if(user){
-        console.log("user exist")
-        const hashedPassword = bcrypt.hash(password)
-        console.log(hashedPassword)
-        res.json({message : "exist"})
+    if(user && bcrypt.compare(password, user.password)){
+        console.log("Logged in")
+        const token = jwt.sign({name : user.name}, process.env.MY_SECRET_KEY, {expiresIn : "1h"})
+        res.json({"token" : token})
     }
     else{
-        console.log("user doesnt exist")
-        const error = new Error("user already exist")
+        console.log("name or password wrong")
+        const error = new Error("name or password wrong")
         next(error)
     }
 }
@@ -50,7 +50,5 @@ const logout = (req,res)=>{
     console.log("logged out")
     res.json({message : "logged out"})
 }
-
-
 
 export {reqBody, signup, login, logout}
